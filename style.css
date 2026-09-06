@@ -1,0 +1,1581 @@
+/* ==========================================
+   CHATX - SMOOTH MODERN INTERFACE
+========================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #f8f7ff;
+    --sidebar: #f1efff;
+    --border: #ddd8f5;
+    --text: #171329;
+    --secondary: #6f6a85;
+    --hover: #e9e5ff;
+    --input: #ffffff;
+    --accent: #7c3aed;
+    --accent-dark: #4f46e5;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+    transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: rgba(241, 239, 255, 0.92);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 18px 14px;
+    position: relative;
+    z-index: 100;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition:
+        transform 0.35s ease,
+        background 0.35s ease,
+        border-color 0.35s ease;
+}
+
+.sidebar-top {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.logo-icon {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-dark)
+    );
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow:
+        0 7px 20px rgba(124, 58, 237, 0.35),
+        0 0 18px rgba(79, 70, 229, 0.20);
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+/* ==========================================
+   NEW CHAT
+========================================== */
+
+.new-chat-btn {
+    width: 100%;
+    border: none;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-dark)
+    );
+    color: white;
+    border-radius: 11px;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    box-shadow: 0 6px 18px rgba(124, 58, 237, 0.25);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+.new-chat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.32);
+    filter: brightness(1.04);
+}
+
+.new-chat-btn:active {
+    transform: scale(0.97);
+}
+
+.new-chat-btn span {
+    font-size: 20px;
+}
+
+/* ==========================================
+   CHAT HISTORY
+========================================== */
+
+.chat-history {
+    flex: 1;
+    margin-top: 25px;
+    overflow-y: auto;
+    padding-right: 3px;
+}
+
+.history-title {
+    color: var(--secondary);
+    font-size: 11px;
+    font-weight: 700;
+    margin: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    margin-bottom: 3px;
+    border-radius: 9px;
+    font-size: 14px;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+
+    /* FIX: keep chat items in a controlled stacking order */
+    position: relative;
+    z-index: 1;
+}
+
+.history-item:hover {
+    background: var(--hover);
+
+    /* FIX: prevent transform from creating stacking problems */
+    transform: none;
+}
+
+/* FIX: the chat whose menu is open stays above other chats */
+.history-item:has(.chat-options-menu) {
+    z-index: 1000;
+}
+
+.history-item.active {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* ==========================================
+   SIDEBAR BOTTOM
+========================================== */
+
+.sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-btn {
+    border: none;
+    background: transparent;
+    color: var(--text);
+    padding: 11px;
+    border-radius: 9px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.sidebar-btn:hover {
+    background: var(--hover);
+    transform: translateX(3px);
+}
+
+/* ==========================================
+   PROFILE
+========================================== */
+
+.profile {
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    padding: 14px 8px 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-dark)
+    );
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.profile strong {
+    display: block;
+    font-size: 14px;
+}
+
+.profile small {
+    color: var(--secondary);
+    font-size: 12px;
+}
+
+/* ==========================================
+   MAIN
+========================================== */
+
+.main {
+    flex: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-width: 0;
+    background: radial-gradient(
+        circle at 50% 0%,
+        rgba(99, 102, 241, 0.07),
+        transparent 38%
+    );
+}
+
+/* ==========================================
+   TOP BAR
+========================================== */
+
+.topbar {
+    height: 60px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition:
+        background 0.35s ease,
+        border-color 0.35s ease;
+}
+
+.model-name {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.85);
+    }
+}
+
+/* ==========================================
+   MOBILE MENU
+========================================== */
+
+.mobile-menu {
+    display: none;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* ==========================================
+   CHAT AREA
+========================================== */
+
+.chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 20px 150px;
+    scroll-behavior: smooth;
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+.chat-area::-webkit-scrollbar,
+.chat-history::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-area::-webkit-scrollbar-thumb,
+.chat-history::-webkit-scrollbar-thumb {
+    background: #d4d4d8;
+    border-radius: 20px;
+}
+
+.chat-area::-webkit-scrollbar-track,
+.chat-history::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ==========================================
+   WELCOME
+========================================== */
+
+.welcome {
+    max-width: 800px;
+    margin: 90px auto 0;
+    text-align: center;
+    animation: welcomeIn 0.7s ease both;
+}
+
+@keyframes welcomeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   WELCOME ICON
+========================================== */
+
+.welcome-icon {
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-dark)
+    );
+    color: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 25px;
+    box-shadow: 0 15px 35px rgba(99, 102, 241, 0.25);
+    animation: welcomeFloat 3s ease-in-out infinite;
+}
+
+@keyframes welcomeFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+/* ==========================================
+   WELCOME TEXT
+========================================== */
+
+.welcome h1 {
+    font-size: 34px;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+}
+
+.welcome p {
+    color: var(--secondary);
+    font-size: 15px;
+}
+
+/* ==========================================
+   SUGGESTIONS
+========================================== */
+
+.suggestions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 35px;
+}
+
+.suggestions button {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.suggestions button:hover {
+    background: white;
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(99, 102, 241, 0.12);
+}
+
+.suggestions button:active {
+    transform: scale(0.97);
+}
+
+.suggestions span {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+/* ==========================================
+   MESSAGES
+========================================== */
+
+.message {
+    max-width: 850px;
+    margin: 0 auto 22px;
+    animation: messageIn 0.35s ease both;
+}
+
+@keyframes messageIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* USER */
+
+.message.user {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.message.user .message-content {
+    max-width: 75%;
+    padding: 13px 17px;
+    border-radius: 18px 18px 5px 18px;
+    color: white;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-dark)
+    );
+    line-height: 1.55;
+    white-space: pre-wrap;
+    box-shadow: 0 7px 20px rgba(124, 58, 237, 0.22);
+    animation: bubbleIn 0.3s ease both;
+}
+
+/* AI */
+
+.message.ai {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.message.ai .message-content {
+    max-width: 85%;
+    padding: 15px 18px;
+    border-radius: 18px 18px 18px 5px;
+    background: #fcfaff;
+    border: 1px solid var(--border);
+    color: #333;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.035);
+    animation: bubbleIn 0.3s ease both;
+}
+
+@keyframes bubbleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.97) translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* ==========================================
+   COPY BUTTON
+========================================== */
+
+.copy-btn {
+    margin-top: 7px;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 8px;
+    background: var(--hover);
+    color: var(--secondary);
+    font-size: 11px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(3px);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.message.ai:hover .copy-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.copy-btn:hover {
+    background: #dedee2;
+}
+
+/* ==========================================
+   INPUT AREA
+========================================== */
+
+.input-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 20px 15px;
+    background: linear-gradient(
+        transparent,
+        var(--bg) 28%
+    );
+}
+
+/* ==========================================
+   INPUT BOX
+========================================== */
+
+.input-box {
+    max-width: 850px;
+    margin: auto;
+    min-height: 58px;
+    border: 1px solid #d5d5d5;
+    border-radius: 18px;
+    background: var(--input);
+    display: flex;
+    align-items: flex-end;
+    padding: 8px 10px 8px 16px;
+    box-shadow: 0 6px 25px rgba(124, 58, 237, 0.10);
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.input-box:focus-within {
+    border-color: rgba(124, 58, 237, 0.6);
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.16);
+    transform: translateY(-1px);
+}
+
+/* ==========================================
+   TEXTAREA
+========================================== */
+
+textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 10px 5px;
+    max-height: 150px;
+    background: transparent;
+    color: var(--text);
+}
+
+textarea::placeholder {
+    color: #999;
+}
+
+/* ==========================================
+   SEND BUTTON
+========================================== */
+
+.send-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        var(--accent-dark)
+    );
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.25);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.send-btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 10px 23px rgba(99, 102, 241, 0.32);
+}
+
+.send-btn:active {
+    transform: scale(0.9);
+}
+
+.send-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ==========================================
+   DISCLAIMER
+========================================== */
+
+.disclaimer {
+    text-align: center;
+    color: #888;
+    font-size: 11px;
+    margin-top: 8px;
+}
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+body.dark-mode {
+    --bg: #0f1117;
+    --sidebar: #151821;
+    --border: #292d38;
+    --text: #eeeeee;
+    --secondary: #9ca3af;
+    --hover: #232733;
+    --input: #1b1f2a;
+}
+
+body.dark-mode .sidebar {
+    background: rgba(21, 24, 33, 0.94);
+}
+
+body.dark-mode .topbar {
+    background: rgba(15, 17, 23, 0.78);
+}
+
+body.dark-mode .main {
+    background: radial-gradient(
+        circle at 50% 0%,
+        rgba(99, 102, 241, 0.12),
+        transparent 38%
+    );
+}
+
+body.dark-mode .new-chat-btn {
+    color: white;
+}
+
+body.dark-mode .suggestions button {
+    background: #181b24;
+    color: #eeeeee;
+    border-color: #292d38;
+}
+
+body.dark-mode .suggestions button:hover {
+    background: #202430;
+}
+
+body.dark-mode .message.ai .message-content {
+    background: #181b24;
+    border-color: #292d38;
+    color: #eeeeee;
+}
+
+body.dark-mode .input-box {
+    border-color: #343947;
+}
+
+body.dark-mode textarea {
+    color: #eeeeee;
+}
+
+body.dark-mode .copy-btn {
+    background: #252936;
+}
+
+/* ==========================================
+   AI RESPONSE ANIMATION
+========================================== */
+
+.message.ai .message-content.thinking {
+    animation: thinkingPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes thinkingPulse {
+    0%,
+    100% {
+        opacity: 0.55;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.message.ai .message-content.response-start {
+    animation: responseAppear 0.25s ease-out;
+}
+
+@keyframes responseAppear {
+    from {
+        opacity: 0.4;
+        transform: translateY(3px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   RECENT CHAT HEADER
+========================================== */
+
+.history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.history-header .history-title {
+    margin: 0;
+}
+
+.clear-history-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 5px 7px;
+    border-radius: 7px;
+    opacity: 0.6;
+    transition: all 0.2s ease;
+}
+
+.clear-history-btn:hover {
+    opacity: 1;
+    background: var(--hover);
+    transform: scale(1.08);
+}
+
+.clear-history-btn:active {
+    transform: scale(0.92);
+}
+
+/* ==========================================
+   CHAT OPTIONS MENU
+========================================== */
+
+.chat-menu-btn {
+    margin-left: auto;
+    border: none;
+    background: transparent;
+    color: var(--secondary);
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    padding: 3px 6px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.history-item:hover .chat-menu-btn {
+    opacity: 1;
+}
+
+.chat-menu-btn:hover {
+    background: var(--hover);
+    color: var(--text);
+}
+
+/* FIXED MENU */
+
+.chat-options-menu {
+    position: absolute;
+    right: 8px;
+    top: 42px;
+
+    /* FIX: put menu above every chat item */
+    z-index: 9999;
+
+    min-width: 130px;
+    background: var(--input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    animation: chatMenuAppear 0.15s ease-out;
+}
+
+.chat-options-menu button {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    padding: 9px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s ease;
+}
+
+.chat-options-menu button:hover {
+    background: var(--hover);
+}
+
+@keyframes chatMenuAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-5px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================
+   CHAT SEARCH
+========================================== */
+
+.chat-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 12px;
+    padding: 8px 10px;
+    background: var(--input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.chat-search:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+}
+
+.chat-search span {
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.chat-search input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.chat-search input::placeholder {
+    color: var(--secondary);
+}
+
+/* ==========================================
+   SETTINGS PANEL
+========================================== */
+
+.settings-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    animation: settingsOverlayIn 0.2s ease;
+}
+
+.settings-panel {
+    width: min(500px, 90%);
+    max-height: 80vh;
+    background: var(--input);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    animation: settingsPanelIn 0.25s ease;
+}
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--border);
+}
+
+.settings-header h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 20px;
+}
+
+.settings-close {
+    border: none;
+    background: transparent;
+    color: var(--secondary);
+    cursor: pointer;
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+}
+
+.settings-close:hover {
+    background: var(--hover);
+    color: var(--text);
+    transform: rotate(90deg);
+}
+
+.settings-content {
+    padding: 10px 20px 20px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 17px 5px;
+    border-bottom: 1px solid var(--border);
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-item strong {
+    display: block;
+    color: var(--text);
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.setting-item small {
+    display: block;
+    color: var(--secondary);
+    font-size: 12px;
+}
+
+.setting-action,
+.setting-danger {
+    border: none;
+    cursor: pointer;
+    border-radius: 9px;
+    padding: 8px 12px;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.setting-action {
+    background: var(--hover);
+    color: var(--text);
+}
+
+.setting-action:hover {
+    transform: scale(1.05);
+}
+
+.setting-danger {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.setting-danger:hover {
+    background: #fecaca;
+    transform: scale(1.03);
+}
+
+.setting-info {
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* ==========================================
+   SETTINGS ANIMATIONS
+========================================== */
+
+@keyframes settingsOverlayIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes settingsPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.settings-refresh {
+    animation: settingsRefresh 0.2s ease;
+}
+
+@keyframes settingsRefresh {
+    50% {
+        transform: scale(1.01);
+    }
+}
+
+/* ==========================================
+   CODE BLOCKS
+========================================== */
+
+.code-block-wrapper {
+    margin: 14px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #111827;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: #1f2937;
+    border-bottom: 1px solid #374151;
+}
+
+.code-language {
+    color: #d1d5db;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.code-copy-btn {
+    border: none;
+    background: transparent;
+    color: #d1d5db;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    transition: all 0.2s ease;
+}
+
+.code-copy-btn:hover {
+    background: #374151;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.code-copy-btn:active {
+    transform: scale(0.95);
+}
+
+.code-block-wrapper pre {
+    margin: 0;
+    padding: 15px;
+    overflow-x: auto;
+    background: #111827;
+    border: none;
+    border-radius: 0;
+}
+
+.code-block-wrapper pre code {
+    display: block;
+    color: #e5e7eb;
+    background: transparent;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre;
+    tab-size: 4;
+}
+
+.code-block-wrapper pre::-webkit-scrollbar {
+    height: 7px;
+}
+
+.code-block-wrapper pre::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 10px;
+}
+
+.message-content code:not(pre code) {
+    background: var(--hover);
+    color: var(--accent);
+    padding: 2px 5px;
+    border-radius: 5px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.9em;
+}
+
+/* ==========================================
+   ATTACH FILE BUTTON
+========================================== */
+
+.attach-btn {
+    border: none;
+    background: transparent;
+    color: var(--secondary);
+    cursor: pointer;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    font-size: 19px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.attach-btn:hover {
+    background: var(--hover);
+    color: var(--accent);
+    transform: scale(1.08);
+}
+
+.attach-btn:active {
+    transform: scale(0.94);
+}
+
+/* ==========================================
+   MICROPHONE BUTTON
+========================================== */
+
+.mic-btn {
+    border: none;
+    background: transparent;
+    color: var(--secondary);
+    cursor: pointer;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.mic-btn:hover {
+    background: var(--hover);
+    color: var(--accent);
+    transform: scale(1.08);
+}
+
+.mic-btn:active {
+    transform: scale(0.94);
+}
+
+.mic-btn.recording {
+    background: rgba(239, 68, 68, 0.12);
+    animation: micPulse 1s ease-in-out infinite;
+    color: #ef4444;
+}
+
+@keyframes micPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+
+    /* --------------------------------------
+       MOBILE SIDEBAR
+    -------------------------------------- */
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+
+        /* Start completely outside the screen */
+        transform: translateX(-100%);
+
+        /* Sidebar stays below the top bar */
+        z-index: 1000;
+
+        /* Solid background on mobile
+           so it doesn't look like a blob */
+        background: var(--sidebar);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-right: 1px solid var(--border);
+        box-shadow: 8px 0 25px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease;
+    }
+
+    /* OPEN SIDEBAR */
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    /* --------------------------------------
+       MAIN
+    -------------------------------------- */
+
+    .main {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    /* --------------------------------------
+       TOP BAR
+    -------------------------------------- */
+
+    .topbar {
+        height: 60px;
+        padding: 0 14px;
+
+        /* IMPORTANT:
+           top bar stays above sidebar */
+        position: relative;
+        z-index: 1100;
+    }
+
+    /* --------------------------------------
+       HAMBURGER BUTTON
+    -------------------------------------- */
+
+    .mobile-menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        /* IMPORTANT:
+           button stays above sidebar */
+        z-index: 1101;
+
+        width: 42px;
+        height: 42px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 10px;
+        background: transparent;
+        color: var(--text);
+        font-size: 23px;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .mobile-menu:hover {
+        background: var(--hover);
+    }
+
+    .mobile-menu:active {
+        transform: scale(0.9);
+    }
+
+    /* --------------------------------------
+       MODEL NAME
+    -------------------------------------- */
+
+    .model-name {
+        font-size: 14px;
+    }
+
+    /* --------------------------------------
+       CHAT AREA
+    -------------------------------------- */
+
+    .chat-area {
+        padding: 20px 14px 120px;
+    }
+
+    /* --------------------------------------
+       WELCOME
+    -------------------------------------- */
+
+    .welcome {
+        padding: 20px 10px;
+        margin-top: 60px;
+    }
+
+    .welcome h1 {
+        font-size: 26px;
+    }
+
+    .welcome p {
+        font-size: 14px;
+    }
+
+    /* --------------------------------------
+       SUGGESTIONS
+    -------------------------------------- */
+
+    .suggestions {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    /* --------------------------------------
+       MESSAGES
+    -------------------------------------- */
+
+    .message.user .message-content,
+    .message.ai .message-content {
+        max-width: 92%;
+        font-size: 14px;
+    }
+
+    /* --------------------------------------
+       INPUT
+    -------------------------------------- */
+
+    .input-container {
+        padding: 10px 12px;
+    }
+
+    .input-box {
+        width: 100%;
+        min-height: 54px;
+        border-radius: 16px;
+        padding-left: 10px;
+    }
+
+    textarea {
+        font-size: 14px;
+    }
+
+    /* --------------------------------------
+       BUTTONS
+    -------------------------------------- */
+
+    .attach-btn,
+    .mic-btn,
+    .send-btn {
+        min-width: 38px;
+        min-height: 38px;
+    }
+
+    /* --------------------------------------
+       SETTINGS
+    -------------------------------------- */
+
+    .settings-panel {
+        width: calc(100% - 24px);
+        max-width: 420px;
+        max-height: 90vh;
+    }
+
+    /* --------------------------------------
+       CHAT OPTIONS
+    -------------------------------------- */
+
+    .chat-options-menu {
+        max-width: calc(100vw - 30px);
+        z-index: 9999;
+    }
+
+    /* --------------------------------------
+       HISTORY
+    -------------------------------------- */
+
+    .history-item {
+        font-size: 14px;
+    }
+
+    /* --------------------------------------
+       DISCLAIMER
+    -------------------------------------- */
+
+    .disclaimer {
+        font-size: 10px;
+        padding: 0 5px;
+    }
+}
+
+/* ==========================================
+   SMALL PHONES
+========================================== */
+
+@media (max-width: 480px) {
+
+    .sidebar {
+        width: 270px;
+    }
+
+    .topbar {
+        padding: 0 10px;
+    }
+
+    .mobile-menu {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+    }
+
+    .model-name {
+        font-size: 13px;
+    }
+
+    .chat-area {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .welcome {
+        margin-top: 35px;
+    }
+
+    .welcome h1 {
+        font-size: 22px;
+    }
+
+    .welcome-icon {
+        width: 54px;
+        height: 54px;
+        font-size: 28px;
+    }
+
+    .message.user .message-content,
+    .message.ai .message-content {
+        max-width: 95%;
+        padding: 11px 13px;
+        font-size: 13px;
+    }
+
+    .input-container {
+        padding: 8px;
+    }
+
+    .input-box {
+        min-height: 50px;
+    }
+
+    .attach-btn,
+    .mic-btn,
+    .send-btn {
+        min-width: 34px;
+        min-height: 34px;
+    }
+}

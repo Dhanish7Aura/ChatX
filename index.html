@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <title>ChatX - AI Assistant</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-top">
+
+            <div class="logo">
+                <div class="logo-icon">✦</div>
+                <span>ChatX</span>
+            </div>
+
+            <button class="new-chat-btn" onclick="newChat()">
+                <span>＋</span>
+                New Chat
+            </button>
+
+        </div>
+
+
+        <!-- CHAT HISTORY -->
+        <div class="chat-history">
+
+            <div class="history-header">
+               <p class="history-title">Recent</p>
+
+               <button
+                 class="clear-history-btn"
+                 onclick="clearRecentChats()"
+                 title="Delete recent chats"
+    >
+                  🗑️
+                 </button>
+             </div>
+             <div class="chat-search">
+                  <span>🔍</span>
+
+                 <input
+                    type="text"
+                    id="chatSearch"
+                    placeholder="Search chats..."
+                    oninput="searchChats()"
+               >
+            </div>
+            <div id="historyList">
+
+                <div class="history-item">
+                    <span>💬</span>
+                    <span>Welcome to ChatX</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR BOTTOM -->
+        <div class="sidebar-bottom">
+
+            <button class="sidebar-btn" onclick="toggleTheme()">
+                <span>🌙</span>
+                Dark Mode
+            </button>
+
+            <button class="sidebar-btn" onclick="openSettings()">
+             <span>⚙️</span>
+              Settings
+            </button>
+
+            <div class="profile">
+
+                <div class="profile-avatar">D</div>
+
+                <div>
+                    <strong>User</strong>
+                    <small>Free Plan</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <div class="model-name">
+
+                <span class="status-dot"></span>
+
+                ChatX AI
+
+            </div>
+
+        </header>
+
+
+        <!-- CHAT AREA -->
+        <section
+            class="chat-area"
+            id="chatArea"
+        >
+
+            <div class="welcome">
+
+                <div class="welcome-icon">
+                    ✦
+                </div>
+
+                <h1>
+                    How can I help you?
+                </h1>
+
+                <p>
+                    Ask ChatX anything. Let's get started.
+                </p>
+
+                <div class="suggestions">
+
+                    <button
+                        onclick="useSuggestion('Explain artificial intelligence simply')"
+                    >
+                        <span>💡</span>
+                        Explain AI simply
+                    </button>
+
+
+                    <button
+                        onclick="useSuggestion('Write a Python program')"
+                    >
+                        <span>💻</span>
+                        Write some code
+                    </button>
+
+
+                    <button
+                        onclick="useSuggestion('Give me some creative ideas')"
+                    >
+                        <span>✨</span>
+                        Give me ideas
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- INPUT AREA -->
+        <div class="input-container">
+             <div class="input-box">
+
+    <button
+        class="attach-btn"
+        onclick="document.getElementById('fileInput').click()"
+        title="Attach file"
+    >
+        📎
+       </button>
+       <button
+       class="mic-btn"
+       onclick="startVoiceInput()"
+       title="Voice input"
+>
+        🎤
+     </button>
+
+    <input
+        type="file"
+        id="fileInput"
+        hidden
+    >
+
+    <textarea
+        id="messageInput"
+        placeholder="Message ChatX..."
+        rows="1"
+        onkeydown="handleKey(event)"
+    ></textarea>
+
+    <button
+        class="send-btn"
+        onclick="sendMessage()"
+        id="sendButton"
+    >
+        ➤
+    </button>
+
+</div>
+            
+
+            
+
+
+            <p class="disclaimer">
+                ChatX can make mistakes. Check important information.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
